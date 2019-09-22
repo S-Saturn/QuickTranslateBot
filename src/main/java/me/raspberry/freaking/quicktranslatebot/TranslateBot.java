@@ -27,12 +27,12 @@ public class TranslateBot extends TelegramLongPollingCommandBot {
     public void processNonCommandUpdate(Update update) {
         if (update.hasMessage() && update.getMessage().hasText()) {
             try {
-                String language = new LanguageDetectionService().post(update.getMessage().getText());
+                String language = new LanguageDetectionService(yandexSubscriptionKey).post(update.getMessage().getText());
 
-                String translation = new TranslationService().post(language, update.getMessage().getText());
+                String translation = new TranslationService(yandexSubscriptionKey).post(language, update.getMessage().getText());
                 SendMessage message = new SendMessage()
                         .setChatId(update.getMessage().getChatId())
-                        .setText(translation + "\r\n\nPowered by Yandex.Translate");
+                        .setText(translation + "\r\n\nPowered by Yandex.Translate (http://translate.yandex.com/)");
                 execute(message);
             } catch (IOException | TelegramApiException e) {
                 e.printStackTrace();
