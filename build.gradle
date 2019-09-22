@@ -1,0 +1,32 @@
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '5.1.0'
+}
+
+group 'me.raspberry.freaking.QuickTranslateBot'
+version '1.0-SNAPSHOT'
+
+jar {
+    manifest {
+        attributes 'Main-Class': "me.raspberry.freaking.quicktranslatebot.TranslateBotApp"
+    }
+}
+
+task stage(dependsOn: ['shadowJar', 'build', 'clean'])
+build.mustRunAfter clean
+
+compileJava {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile 'org.telegram:telegrambots:4.1'
+    compile 'org.telegram:telegrambotsextensions:4.1'
+    implementation "com.squareup.okhttp3:okhttp:3.13.1"
+}
